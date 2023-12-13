@@ -1,0 +1,28 @@
+body {
+  background-image: url('petchat.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.links {
+  position: absolute;
+  top: 30px; /* Adjust the top position as needed */
+  right: 40px;
+}
+
+.links a {
+  text-decoration: none;
+  color: #000000;
+  font-weight: bold;
+  font-size: 25px; /* Adjust the font size as needed */
+  margin: 0 10px;
+  display: inline;
+}

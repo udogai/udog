@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>UDOG 챗봇</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dashboardstyle.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  </head>
+  <body>
+      <!-- Logo -->
+      <div class="logo">
+        <img src="{{ url_for('static', filename='dog-logo.png') }}" alt="Logo">
+      </div>
+      <h1>UDOG</h1>
+  
+      <!-- Display Question and Answer -->
+      <div id="chat-history" class="chat-history">
+      <!-- 결과가 여기에 동적으로 추가될 것입니다. -->
+      </div>
+
+      <!-- 결과 출력 중 표시 -->
+      <div id="loading" style="display: none;">결과 출력 중...</div>
+
+      <div id="result-buttons">
+        <!-- UDOG 추천 병원 버튼 -->
+        <button type="button" onclick="findHospitals()">추천 병원</button>
+      
+        <!-- 증상 버튼 -->
+        <button type="button" id="기침">기침</button>
+        <button type="button" id="식욕부진">식욕부진</button>
+        <button type="button" id="구토">구토</button>
+        <button type="button" id="설사">설사</button>
+        <button type="button" id="염증">염증</button>
+        
+      </div>
+
+
+
+      
+      <!-- 결과 영역 -->
+      <div id="result"></div>
+  
+      <!-- address 입력 필드 -->
+      <input type="text" id="address" name="address" style="display:none;">
+
+      <!-- Existing Form -->
+      <form id="chat-form" action="/chat2" method="post">
+        <input type="text" name="message" id="message" placeholder="질문해주세요." required><br>
+        <button type="submit">전송</button>
+      </form>
+
+      <!-- Links Div -->
+     <div class="links">
+       <a href="/index">메인 페이지로 이동</a>
+       <a href="/logout">로그아웃</a>
+       <a href="/contact" target="_blank">고객 문의</a>
+      </div>
+
+    <!-- JavaScript 코드 -->
+    <script>
+      $(document).ready(function() {
+          $('#chat-form').submit(function(e) {
+              e.preventDefault();
+              var message = $('#message').val();
+  
+              // 결과 출력 중 표시
+              $('#loading').show();
+  
+              $.ajax({
+                  type: 'POST',
+                  url: '/chat2',
+                  data: {message: message},
+                  success: function(response) {
+                      // 결과를 동적으로 추가
+                      var chatHistory = response.chat_history;
+  
+                      // Remove user label using a regular expression
+                      chatHistory = chatHistory.replace(/USER\s*:\s*/g, '');
+  
+                      // Remove UDOG: label
+                      chatHistory = chatHistory.replace(/UDOG\s*:/g, '');
+  
+                      // Update chat history content
+                      $('#chat-history').html(chatHistory);
+  
+                      // 입력 필드 초기화
+                      $('#message').val('');
+                      // 결과 출력 중 표시 숨김
+                      $('#loading').hide();
+                  },
+                  error: function(error) {
+                      console.log(error);
+                      // 결과 출력 중 표시 숨김
+                      $('#loading').hide();
+                  }
+              });
+          });
+          
+          // UDOG 추천 병원 버튼 클릭 시 이벤트 처리
+          $('#기침').click(function() {
+              // 질문창에 증상 입력
+              $('#message').val('강아지가 기침 증상이 있어');
+
+              // 결과 표시 요청
+              $('#chat-form').submit();
+          });
+
+          $('#식욕부진').click(function() {
+              // 질문창에 증상 입력
+              $('#message').val('강아지가 식욕부진 증상이 있어');
+
+              // 결과 표시 요청
+              $('#chat-form').submit();
+          });
+
+          $('#구토').click(function() {
+              // 질문창에 증상 입력
+              $('#message').val('강아지가 구토 증상이 있어');
+
+              // 결과 표시 요청
+              $('#chat-form').submit();
+          });
+
+          $('#설사').click(function() {
+              // 질문창에 증상 입력
+              $('#message').val('강아지가 설사 증상이 있어');
+
+              // 결과 표시 요청
+              $('#chat-form').submit();
+          });
+          
+          $('#염증').click(function() {
+              // 질문창에 증상 입력
+              $('#message').val('강아지가 염증이 있어');
+
+              // 결과 표시 요청
+              $('#chat-form').submit();
+          });
+      });
+
+
+        // 여기부터 근처 병원 추천
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            // 수정: address 요소를 화면에 표시하지 않음
+            var addressElement = document.getElementById("address");
+            addressElement.value = `${position.coords.latitude}, ${position.coords.longitude}`;
+
+		var addressElement = document.getElementById("address");
+                var address = addressElement.value;
+                console.log("Address sent to server:", address);
+
+                var resultElement = document.getElementById("result");
+                // 결과 출력 중 표시
+                //$('#loading').show();
+
+                // 서버로 현재 위치 정보를 전송
+			    console.log('fetch', address);
+                fetch('/find_hospitals', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ address: address })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Invalid address');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 상위 5개의 병원만 표시
+                    var top5Hospitals = data.hospitals.slice(0, 5);
+                    data.hospitals = top5Hospitals;
+                    console.log(111)
+                    // 서버로부터 받은 데이터를 화면에 표시
+                    displayResults(data);
+                    console.log(2222)
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    resultElement.innerHTML = `<p>Error: ${error.message}</p>`;
+                    resultElement.innerHTML = `<p style='color:red'>팝업차단을 해제 해주세요`;
+                });
+        }
+
+        function findHospitals() {
+            // 현재 위치 정보를 가져오기
+            getCurrentLocation();
+            // 결과 출력 중 표시
+            $('#loading').show();
+            return;
+            // 잠시 대기하여 위치 정보가 업데이트되도록 함
+            setTimeout(function () {
+                var addressElement = document.getElementById("address");
+                var address = addressElement.value;
+                console.log("Address sent to server:", address);
+
+                var resultElement = document.getElementById("result");
+                // 결과 출력 중 표시
+                $('#loading').show();
+
+                // 서버로 현재 위치 정보를 전송
+                fetch('/find_hospitals', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ address: address })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Invalid address');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 상위 5개의 병원만 표시
+                    var top5Hospitals = data.hospitals.slice(0, 5);
+                    data.hospitals = top5Hospitals;
+
+                    // 서버로부터 받은 데이터를 화면에 표시
+                    displayResults(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    resultElement.innerHTML = `<p>Error: ${error.message}</p>`;
+                });
+            }, 1000);  // 1초 대기 (원하는 대기 시간으로 조정 가능)
+        }
+
+        function displayResults(data) {
+            var resultHTML = ''; // 결과 초기화
+            $('#loading').hide();
+
+            if (data.hospitals.length > 0) {
+                resultHTML += "<h2>UDOG 추천 병원</h2><ul>";
+                resultHTML += "<h5>반경 1KM 이내, 평정 3.5 이상의 동물병원을 추천해드립니다. 링크를 눌러 자세한 정보를 확인해보세요!</h5><ul>";
+
+                // 상위 5개 병원 정보만 리스트로 표시
+                data.hospitals.forEach(hospital => {
+                    resultHTML += `<li><a href="https://www.google.com/maps/search/?api=1&query=${hospital.name}, ${hospital.address}" target="_blank"><strong>${hospital.name}</strong> - Rating: ${hospital.rating}</a></li>`;
+                });
+
+                resultHTML += "</ul>";
+            } else {
+                resultHTML = "<p>No hospitals found in the vicinity.</p>";
+            }
+
+           console.log(222); 
+            // 새 창에 결과 표시
+            var newWindow = window.open("", "_blank", "width=400,height=300");
+            newWindow.document.open();
+            newWindow.document.write('<html><head><title>UDOG 추천 병원</title></head><body style="background-color:#f9dada;">');
+            newWindow.document.write(resultHTML);
+            newWindow.document.write('</body></html>');
+            newWindow.document.close();
+        }
+    </script>
+</body>
+</html>

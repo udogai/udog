@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>UDOG 회원가입</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='userjoin.css') }}">
+</head>
+<body style="display: flex; align-items: center; justify-content: center; height: 92vh; margin: 0; background-image: url('{{ url_for('static', filename='bg.png') }}'); background-size: cover; background-position: center;">
+  <div class="content">
+    <h1>회원가입</h1>
+    <form action="/join" method="post">
+      <input type="text" name="username" placeholder="사용자 이름" required><br>
+      <input type="password" name="password" placeholder="비밀번호" required><br>
+      <button type="submit">회원가입</button>
+    </form>
+    <p>이미 회원이신가요? <a href="/login">로그인하세요.</a></p>
+  </div>
+</body>
+</html>

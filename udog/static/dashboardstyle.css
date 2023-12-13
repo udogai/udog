@@ -1,0 +1,158 @@
+body {
+  background-image: url('petchat1.jfif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  justify-content: space-between;
+}
+
+.logo {
+  position: absolute;
+  top: 15px;
+  left: 30px;
+}
+
+.logo img {
+  width: 130px;
+  height: 130px;
+  margin-right: 15px;
+}
+
+h1 {
+  text-align: center;
+  color: black;
+  font-size: 3em;
+  padding: 20px;
+  margin: 40px auto 0 auto;
+}
+
+.chat-history {
+  height: 600px;
+  overflow-y: auto;
+  margin: 0 auto 10px auto;
+  max-width: 1500px;
+  width: 100%;
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user,
+.assistant {
+    margin-bottom: 10px;
+    max-width: 80%; /* Limiting the maximum width for better readability */
+    padding: 10px;
+    border-radius: 15px;
+    display: inline-block;
+    font-size: 20px; /* Set the font size for both user and assistant messages */
+    font-weight: bold; /* Make the font bold */
+  }
+
+.user {
+    align-self: flex-end;
+    text-align: right; /* Align text to the right */
+    background-color: #ff6982; /* Green background color for user messages */
+    color: white; /* White text color for user messages */
+    margin-right: 0.6%; /* Adjust the margin to move user messages towards the middle */
+}
+
+.assistant {
+    align-self: flex-start;
+    text-align: left; /* Align text to the left */
+    background-color: #ebc7cc; /* Blue background color for assistant messages */
+    color: rgb(0, 0, 0); /* White text color for assistant messages */
+    margin-left: 0.6%; /* Adjust the margin to move assistant messages towards the middle */
+}
+
+form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px auto;
+  max-width: 1500px;
+  width: 100%;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+}
+
+input {
+  flex: 1; /* Takes up remaining space */
+  padding: 10px;
+  box-sizing: border-box;
+  height: 40px;
+  margin-right: 10px; /* Adjusted margin */
+}
+
+button {
+  width: 100px;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  box-sizing: border-box;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 40px;
+  transition: background-color 0.3s ease;
+  margin-bottom: 0;
+}
+
+button:hover {
+  background-color: #000000;
+}
+
+.links {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+}
+
+.links a {
+  text-decoration: none;
+  color: #000000;
+  font-weight: bold;
+  font-size: 25px;
+  margin: 0 10px;
+  display: inline;
+}
+
+#loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 24px;
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+}
+
+#result-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px auto;
+  max-width: 1500px;
+  width: 100%;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+}
+
+#result-buttons button {
+  flex-grow: 1; /* 각 버튼이 가로로 확장될 수 있도록 설정 */
+  margin-right: 20px; /* 각 버튼 사이의 간격을 설정 */
+}

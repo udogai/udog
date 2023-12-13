@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDOG</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header id="hero">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='dog-logo1.png') }}" alt="Pet Health Companion Logo">
+            <h1></h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/login" target="_blank">로그인</a></li>
+                <li><a href="/userjoin" target="_blank">회원가입</a></li>
+                <li><a href="#features">기능 보기</a></li>
+                <li><a href="/contact" target="_blank">고객 문의</a></li>
+            </ul>
+        </nav>
+        <div class="hero-content">
+            <h2>여러분 손 안의 작은 동물병원, UDOG.</h2>
+            <p>UDOG 반려견 헬스케어 챗봇은 여러분을 위해 언제나 준비되어 있습니다.</p>
+            <a href="/dashboard" target="_self"><button>대화 시작하기</button></a>
+        </div>
+    </header>
+
+    <section id="features" class="features">
+        <h2 class="features-title">기능 보기</h2>
+        <div class="feature">
+            <img src="{{ url_for('static', filename='f1.png') }}" alt="Feature 1 Icon">
+            <h3>24시간 연중무휴</h3>
+            <p>UDOG 반려견 헬스케어 챗봇은 언제 어디서나 당신의 반려견을 위한 조언을 제공할 수 있습니다.</p>
+        </div>        
+            <div class="feature">
+                <img src="{{ url_for('static', filename='f2.png') }}" alt="Feature 2 Icon">
+                <h3>건강 및 의료 조언</h3>
+                <p>UDOG 반려견 헬스케어 챗봇은 반려견의 증상을 파악하고<br>
+                    의약품, 동물 병원 추천 등<br>
+                    의료 조언을 제공합니다.</p>
+            </div>
+            <div class="feature">
+                <img src="{{ url_for('static', filename='f3.png') }}" alt="Feature 3 Icon">
+                <h3>생활 조언</h3>
+                <p>UDOG 반려견 헬스케어 챗봇은 의료 조언 뿐만 아니라 식습관,<br>
+                    산책 등 생활 조언도 제공합니다.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer id="contact">
+        <p>&copy; 이거4조</p>
+        <p>고객 문의: <a href="/contact" target="_blank">udogcontact.com</a></p>
+    </footer>
+
+    <!-- <script src="{{ url_for('static', filename='script.js') }}"></script> -->
+</body>
+</html>
